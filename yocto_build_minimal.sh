@@ -10,17 +10,34 @@ sudo apt install cpp gcc g++ chrpath
 #clone repos
 git clone -b morty git://git.yoctoproject.org/poky.git
 git clone -b morty git://github.com/Xilinx/meta-xilinx
-
+git clone git@github.com:tsotnep/yocto-linux.git
 
 # setup stuff for builds
 source poky/oe-init-build-env
   #moves into directory : $origin/build
 
 
-#TODO or manually: add /home/tsotne/ownCloud/git/yocto/meta-xilinx  in conf/bblayers.conf
+
+#create file that has info about layers
+echo "# POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/bblayers.conf" > conf/bblayers.conf
+echo "# changes incompatibly" >> conf/bblayers.conf
+echo "POKY_BBLAYERS_CONF_VERSION = \"2\" " >> conf/bblayers.conf
+echo "" >> conf/bblayers.conf
+echo "BBPATH = \"\${TOPDIR}\" " >> conf/bblayers.conf
+echo "BBFILES ?= \"\" " >> conf/bblayers.conf
+echo "" >> conf/bblayers.conf
+echo "BBLAYERS ?= \" \ " >> conf/bblayers.conf
+echo "  $origin/poky/meta \ " >> conf/bblayers.conf
+echo "  $origin/poky/meta-poky \ " >> conf/bblayers.conf
+echo "  $origin/poky/meta-yocto-bsp \ " >> conf/bblayers.conf
+echo "  $origin/meta-xilinx \ " >> conf/bblayers.conf
+echo "  \" " >> conf/bblayers.conf
+  # or manually: add /home/tsotne/ownCloud/git/yocto/meta-xilinx  in conf/bblayers.conf
 
 
-#TODO manually: replace with this: MACHINE ?= "zedboard-zynq7" in conf/local.conf. to check possible machines type : ls meta-xilinx/conf/machine/
+#owerwrite modified configuration file to default one.
+cp -f $origin/yocto-linux/local.conf conf/local.conf
+  # or manually: replace with this: MACHINE ?= "zedboard-zynq7" in conf/local.conf. possible machines : ls meta-xilinx/conf/machine/
 
 
 
@@ -30,7 +47,7 @@ bitbake core-image-minimal
 
 
 
-#important files:
+#list of important files:
   #boot.bin --primary bootloader
   #core-image-minimal-zedboard-zynq7.* --file system files
   #modules-zedboard-zynq7.tgz --tarball of kernel modules
