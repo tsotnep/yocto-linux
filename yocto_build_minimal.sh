@@ -1,3 +1,10 @@
+# @tsotnep
+#totally, yocto folder will take ~ 22.9 GB
+#total time from start to linux will be around: 40 min. (PC: 500Mbps-ethernet, 32GB-ram, intel i7-6700 3.4GHz-x4)
+#learned those from: https://attendee.gotowebinar.com/recording/3557457058574848259
+
+
+
 origin="/home/tsotne/ownCloud/git/yocto"
 mkdir -p $origin && cd $origin
 
@@ -10,7 +17,6 @@ sudo apt install cpp gcc g++ chrpath
 #clone repos
 git clone -b morty git://git.yoctoproject.org/poky.git
 git clone -b morty git://github.com/Xilinx/meta-xilinx
-git clone git@github.com:tsotnep/yocto-linux.git
 
 # setup stuff for builds
 source poky/oe-init-build-env
@@ -32,12 +38,14 @@ echo "  $origin/poky/meta-poky \ " >> conf/bblayers.conf
 echo "  $origin/poky/meta-yocto-bsp \ " >> conf/bblayers.conf
 echo "  $origin/meta-xilinx \ " >> conf/bblayers.conf
 echo "  \" " >> conf/bblayers.conf
-  # or manually: add /home/tsotne/ownCloud/git/yocto/meta-xilinx  in conf/bblayers.conf
+  # or: add /home/tsotne/ownCloud/git/yocto/meta-xilinx  in conf/bblayers.conf
 
 
-#owerwrite modified configuration file to default one.
-cp -f $origin/yocto-linux/local.conf conf/local.conf
-  # or manually: replace with this: MACHINE ?= "zedboard-zynq7" in conf/local.conf. possible machines : ls meta-xilinx/conf/machine/
+#owerwrite modified configuration file on a default one.
+wget https://raw.githubusercontent.com/tsotnep/yocto-linux/master/local.conf -O conf/local.conf
+  # or: cp -f $origin/yocto-linux/local.conf conf/local.conf
+  # or: replace with this: MACHINE ?= "zedboard-zynq7" in conf/local.conf.
+  # possible machines : ls meta-xilinx/conf/machine/
 
 
 
@@ -67,7 +75,7 @@ bitbake dosfstools-native mtools-native parted-native
 wic create sdimage-bootpart -e core-image-minimal
 
 
-#put that image to SD card. sd(d) was in my case. vide -(23:42)
+#put that image to SD card. sd(d) was in my case. video -(23:42)
 sudo dd if=/var/tmp/wic/build/sdimage-bootpart-201703241446-mmcblk.direct of=/dev/sdd bs=4k
   #from that:
     #root partition is: 6.9 mb used from 13.5
@@ -75,6 +83,3 @@ sudo dd if=/var/tmp/wic/build/sdimage-bootpart-201703241446-mmcblk.direct of=/de
     #rest of the sd card is unallocated
   #in my case it did not work until i formatted the sd card partitions. might be coincidence.
   #login username of linux (uses uart) is: root (password is not required)
-
-
-#totally, yocto folder takes 22.9 GB
