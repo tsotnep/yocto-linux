@@ -14,7 +14,7 @@ Another option with Xilinx Specific version Uboot:
 
 Toolchain install:
   bitbake core-image-minimal -c populate_sdk
-  ./tmp/deploy/sdk/poky-glibc-*
+  ./tmp/deploy/sdk/poky-glibc-x86_64-core-image-minimal-cortexa9hf-neon-toolchain-2.2.1.sh
 
 Toolchain usage:
   source /opt/poky/2.2.1/environment-setup-cortexa9-vfp-neon*
