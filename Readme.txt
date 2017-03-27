@@ -53,6 +53,9 @@ Modifying device trees
     * other long term solution will be to modify bitmake to include correct device tree. (not described in video)
 
 
+Include bitstream:
+  * i think i have to put bitstream in this location (have not tested):
+    tmp/deploy/images/zedboard-zynq7/
 About kernel version:
     you can change it in conf/local.conf
       PREFERRED_PROVIDER_virtual/kernel ?= "linux-yocto"
