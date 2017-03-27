@@ -39,8 +39,18 @@ and then simply bitbake core-image-minimal and it will do all those shits
 
 
 Modifying device trees
-    easiest option is to replace generated device tree with yours (you have to use device tree compiler)
-    long term solution will be to modify bitmake to include correct device tree. (not described)
+    * easiest option is to replace generated device tree with yours (you have to use device tree compiler)
+      cd  /home/tsotne/ownCloud/git/yocto/build/tmp/work/zedboard_zynq7-poky-linux-gnueabi/linux-xlnx/4.6-xilinx-v2016.3+gitAUTOINC+0e4e407149-r0/linux-zedboard_zynq7-standard-build/scripts/dtc
+      dtc -I dts -O dtb -o /home/tsotne/ownCloud/git/yocto/new_devicetree.dtb   <file path of dts file you want to compile>
+
+    * or modify provided device tree like described below (this was not described in video, and have not tested, maybe it gets new device trees from remote sources?)
+      cd /home/tsotne/ownCloud/git/yocto/build/tmp/work-shared/zedboard-zynq7/kernel-source/
+      cd arch/arm/boot/dts/
+      cp zynq-zc702.dts zynq-zc702.dts_original
+      vim zynq-zc702.dts
+        //modify as you wish
+
+    * other long term solution will be to modify bitmake to include correct device tree. (not described in video)
 
 
 About kernel version:
